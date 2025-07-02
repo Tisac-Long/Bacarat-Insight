@@ -1,41 +1,26 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>Tool Baccarat</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Baccarat Insight v2.0</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <h1>Phân tích Baccarat - Tiếng Việt</h1>
-  <div id="input-section">
-    <h3>Nhập lá bài</h3>
-    <label>Player:</label>
-    <select id="P1"><option>A</option><option>2</option><option>3</option><option>4</option><option>5</option>
-    <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
-    <option>J</option><option>Q</option><option>K</option></select>
-    <select id="P2"><option>A</option><option>2</option><option>3</option><option>4</option><option>5</option>
-    <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
-    <option>J</option><option>Q</option><option>K</option></select>
-    <select id="P3"><option></option><option>A</option><option>2</option><option>3</option><option>4</option><option>5</option>
-    <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
-    <option>J</option><option>Q</option><option>K</option></select>
-    <br>
-    <label>Banker:</label>
-    <select id="B1"><option>A</option><option>2</option><option>3</option><option>4</option><option>5</option>
-    <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
-    <option>J</option><option>Q</option><option>K</option></select>
-    <select id="B2"><option>A</option><option>2</option><option>3</option><option>4</option><option>5</option>
-    <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
-    <option>J</option><option>Q</option><option>K</option></select>
-    <select id="B3"><option></option><option>A</option><option>2</option><option>3</option><option>4</option><option>5</option>
-    <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
-    <option>J</option><option>Q</option><option>K</option></select>
-    <br><button onclick="tinhKetQua()">Tính kết quả</button>
+  <h1>Baccarat Insight v2.0</h1>
+  <div id="app">
+    <!-- Form nhập lá bài -->
+    <div class="card-input">
+      <label for="playerCards">Lá bài Con:</label>
+      <input type="text" id="playerCards" placeholder="VD: 2, J" />
+      <label for="bankerCards">Lá bài Cái:</label>
+      <input type="text" id="bankerCards" placeholder="VD: 9, K" />
+      <button onclick="submitRound()">Thêm ván</button>
+    </div>
+
+    <!-- Kết quả và gợi ý -->
+    <div id="results"></div>
   </div>
-  <div id="output-section">
-    <h3>Kết quả</h3>
-    <p id="ketqua"></p>
-  </div>
-  <script src="script.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

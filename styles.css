@@ -1,0 +1,27 @@
+body {
+  font-family: sans-serif;
+  margin: 20px;
+  background: #f9f9f9;
+  color: #333;
+}
+h1 {
+  text-align: center;
+  color: #004f7c;
+}
+.card-input {
+  margin-bottom: 20px;
+}
+input {
+  margin: 5px;
+  padding: 5px;
+}
+button {
+  padding: 6px 12px;
+  background-color: #0078d4;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+#results {
+  margin-top: 20px;
+}

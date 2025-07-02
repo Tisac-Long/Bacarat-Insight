@@ -1,17 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Baccarat Insight</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Tool Baccarat</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Baccarat Insight</h1>
-  <input type="file" accept="image/*" id="upload" />
-  <button onclick="resetHistory()">🧹 Xóa lịch sử</button>
-  <div id="result"></div>
-  <div id="history"></div>
+  <h1>Phân tích Baccarat - Tiếng Việt</h1>
+  <div id="input-section">
+    <h3>Nhập lá bài</h3>
+    <label>Player:</label>
+    <select id="P1"><option>A</option><option>2</option><option>3</option><option>4</option><option>5</option>
+    <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+    <option>J</option><option>Q</option><option>K</option></select>
+    <select id="P2"><option>A</option><option>2</option><option>3</option><option>4</option><option>5</option>
+    <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+    <option>J</option><option>Q</option><option>K</option></select>
+    <select id="P3"><option></option><option>A</option><option>2</option><option>3</option><option>4</option><option>5</option>
+    <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+    <option>J</option><option>Q</option><option>K</option></select>
+    <br>
+    <label>Banker:</label>
+    <select id="B1"><option>A</option><option>2</option><option>3</option><option>4</option><option>5</option>
+    <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+    <option>J</option><option>Q</option><option>K</option></select>
+    <select id="B2"><option>A</option><option>2</option><option>3</option><option>4</option><option>5</option>
+    <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+    <option>J</option><option>Q</option><option>K</option></select>
+    <select id="B3"><option></option><option>A</option><option>2</option><option>3</option><option>4</option><option>5</option>
+    <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+    <option>J</option><option>Q</option><option>K</option></select>
+    <br><button onclick="tinhKetQua()">Tính kết quả</button>
+  </div>
+  <div id="output-section">
+    <h3>Kết quả</h3>
+    <p id="ketqua"></p>
+  </div>
   <script src="script.js"></script>
 </body>
 </html>

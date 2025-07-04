@@ -87,27 +87,7 @@ function makePrediction() {
   prediction = { guess };
   document.getElementById("predictionContent").innerHTML = `
     🔮 Cầu mạnh nhất: <b>${guess}</b><br>
-    🎯 Gợi ý cược: <span class='highlight'>${guess}</span><br>
+🎯 Gợi ý cược: <span class='highlight'>${guess}</span><br>
     🎲 Kèo phụ: PP ${ppRate}% | BP ${bpRate}%
   `;
-}
-  else if (bankerPoint > playerPoint) winner = "Cái thắng";
-
-  const result = {
-    playerCards, bankerCards,
-    playerPoint, bankerPoint,
-    winner
-  };
-  history.push(result);
-  displayResults();
-}
-
-function displayResults() {
-  let html = "<h2>Kết quả các ván đã nhập:</h2><ul>";
-  history.forEach((round, index) => {
-    html += `<li>Ván ${index + 1}: Con [${round.playerCards.join(", ")}] (${round.playerPoint}) - 
-      Cái [${round.bankerCards.join(", ")}] (${round.bankerPoint}) => <b>${round.winner}</b></li>`;
-  });
-  html += "</ul>";
-  document.getElementById("results").innerHTML = html;
 }

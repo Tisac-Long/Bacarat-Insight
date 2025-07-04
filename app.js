@@ -63,6 +63,14 @@ function resetDropdowns() {
   });
 }
 
+function countCorrect(pattern) {
+  let count = 0;
+  for (let i = 1; i < history.length; i++) {
+    if (pattern(history[i], history[i - 1])) count++;
+  }
+  return count;
+}
+
 function displayHistory() {
   let html = "<h3>🧾 Lịch sử ván đã nhập</h3><ul>";
   history.forEach(r => {
@@ -86,23 +94,30 @@ function makePrediction() {
   const last = history[history.length - 1];
   const prev = history[history.length - 2];
   const guess = last.winner === prev.winner ? last.winner : (last.winner === "Cái thắng" ? "Con thắng" : "Cái thắng");
+
+  // Cầu thống kê
+  const C1 = countCorrect((a, b) => a.winner === b.winner); // giữ cầu
+  const C3 = countCorrect((a, b) => a.winner !== b.winner); // đảo cầu
+
   const ppRate = (history.filter(r => r.playerPair).length / history.length * 100).toFixed(1);
   const bpRate = (history.filter(r => r.bankerPair).length / history.length * 100).toFixed(1);
   const tieRate = (history.filter(r => r.winner === "Hòa").length / history.length * 100).toFixed(1);
+  const mainRate = (C1 > C3 ? (C1 / (history.length - 1)) : (C3 / (history.length - 1))) * 100;
 
   prediction = { guess };
+
   document.getElementById("predictionContent").innerText = `🧠 DỰ ĐOÁN VÁN KẾ TIẾP – VÁN ${round}
 ───────────────────────────────
 📌 Phân tích cầu:
-- C1 (Giữ cầu): ✅
+- C1 (Giữ cầu): ${C1 >= 2 ? "✅" : "❌"} ĐÚNG ${C1} lần
 - C2 (Cầu nhảy): ❌
-- C3 (Lặp 2-1): ✅
+- C3 (Lặp 2-1): ${C3 >= 2 ? "✅" : "❌"} ĐÚNG ${C3} lần
 - C4 (Đảo cầu): ❌
 
 🔮 Cầu mạnh nhất: C1 – Giữ cầu ${guess}
 
 🎯 GỢI Ý CƯỢC:
-- 👉 Cược chính: ${guess === "Con thắng" ? "🟦 Con" : "🟥 Cái"} 
+- 👉 Cược chính: ${guess === "Con thắng" ? "🟦 Con" : "🟥 Cái"} (${mainRate.toFixed(1)}%)
 - ⚖️ Kèo phụ:
   • 🎲 Hòa (Tie): ${tieRate}%
   • 🃏 Con đôi (PP): ${ppRate}%

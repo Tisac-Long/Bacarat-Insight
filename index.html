@@ -3,24 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Baccarat Insight v2.0</title>
+  <title>Baccarat Insight v2.3 PRO</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <h1>Baccarat Insight v2.0</h1>
-  <div id="app">
-    <!-- Form nhập lá bài -->
-    <div class="card-input">
-      <label for="playerCards">Lá bài Con:</label>
-      <input type="text" id="playerCards" placeholder="VD: 2, J" />
-      <label for="bankerCards">Lá bài Cái:</label>
-      <input type="text" id="bankerCards" placeholder="VD: 9, K" />
-      <button onclick="submitRound()">Thêm ván</button>
-    </div>
+  <h1>Baccarat Insight v2.3 PRO</h1>
 
-    <!-- Kết quả và gợi ý -->
-    <div id="results"></div>
+  <div class="prediction-box" id="predictionBox">
+    <h2>🧠 DỰ ĐOÁN VÁN KẾ TIẾP</h2>
+    <div id="predictionContent">Nhập ít nhất 4 ván để bắt đầu phân tích...</div>
   </div>
+
+  <div class="card-input">
+    <label for="startRound">Số ván bắt đầu:</label>
+    <input type="number" id="startRound" placeholder="VD: 1" />
+    <button onclick="startSession()">Bắt đầu</button>
+  </div>
+
+  <div id="inputSection" style="display:none;">
+    <h3>Ván hiện tại: <span id="currentRound">?</span></h3>
+    <div>
+      <label>Lá bài CON:</label>
+      <select id="p1"></select>
+      <select id="p2"></select>
+      <select id="p3"></select>
+    </div>
+    <div>
+      <label>Lá bài CÁI:</label>
+      <select id="b1"></select>
+      <select id="b2"></select>
+      <select id="b3"></select>
+    </div>
+    <button onclick="submitRound()">➕ Thêm ván</button>
+  </div>
+
+  <div id="results"></div>
+
   <script src="app.js"></script>
 </body>
 </html>

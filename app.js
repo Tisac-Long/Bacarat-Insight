@@ -51,11 +51,13 @@ function submitGame() {
 function showPrediction() {
   const prev = history.at(-1);
   if (!prev) return;
+
   const len = prev.pCards.length + prev.bCards.length;
-  const t = history.length >= 2 && history.at(-2).result === prev.result ? 1 : 0;
-  const logic = van - len + t;
+  const keep = history.length >= 2 && history.at(-1).result === history.at(-2).result ? 1 : 0;
+  const logic = van - len + keep;
   const guess = logic % 2 === 0 ? 'B' : 'P';
 
+  // Cầu
   const C1 = history.length >= 2 && history.at(-1).result === history.at(-2).result;
   const C2 = history.length >= 3 &&
              history.at(-3).result !== history.at(-2).result &&
@@ -67,9 +69,14 @@ function showPrediction() {
              history.at(-4).result === history.at(-3).result &&
              history.at(-2).result !== history.at(-3).result;
 
+  // Xác suất PP, BP
+  const ppRate = (history.filter(g=>g.pp).length / history.length * 100).toFixed(1);
+  const bpRate = (history.filter(g=>g.bp).length / history.length * 100).toFixed(1);
+  const tieRate = (history.filter(g=>g.result==='T').length / history.length * 100).toFixed(1);
+
   const predictionBox = document.getElementById('predictionBox');
   predictionBox.innerHTML = `
-  <pre>
+<pre>
 🧠 DỰ ĐOÁN VÁN KẾ TIẾP – VÁN ${van}
 ───────────────────────────────
 📌 Phân tích cầu:
@@ -78,11 +85,12 @@ function showPrediction() {
 - C3 (Lặp 2-1): ${C3 ? '✅' : '❌'}
 - C4 (Đảo cầu): ${C4 ? '✅' : '❌'}
 
-🔮 Gợi ý cầu chính: ${guess === 'B' ? '🟥 Cái' : '🟦 Con'}
+🔮 Dự đoán cầu chính: ${guess === 'B' ? '🟥 Cái' : '🟦 Con'}
 
-🎯 Kèo phụ:
-• 🃏 Con đôi (PP): ${prev.pp ? '✅' : '❌'}
-• 🃏 Cái đôi (BP): ${prev.bp ? '✅' : '❌'}
+🎯 KÈO PHỤ:
+• 🃏 Con đôi (PP): ${ppRate}%
+• 🃏 Cái đôi (BP): ${bpRate}%
+• 🎲 Hòa (Tie): ${tieRate}%
 </pre>
   `;
 }

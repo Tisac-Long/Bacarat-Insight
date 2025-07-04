@@ -12,10 +12,9 @@ body {
   padding: 20px;
   border-radius: 10px;
 }
-input[type="number"], input[type="file"] {
+select, input[type="number"] {
   padding: 8px;
-  margin-top: 10px;
-  width: 100%;
+  margin: 4px 2px;
 }
 button {
   margin-top: 10px;

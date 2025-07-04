@@ -4,21 +4,130 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Baccarat Insight v2.5 Pro</title>
+  <title>Baccarat Insight v2.5.1 Pro</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="app">
-    <h1>Baccarat Insight v2.5 Pro</h1>
-    <div id="image-upload">
-      <p>📷 Gửi ảnh ván bài để phân tích</p>
-      <input type="file" id="imageInput" accept="image/*" />
-    </div>
+    <h1>Baccarat Insight v2.5.1 Pro</h1>
+
     <div id="round-input">
       <label for="startRound">🔢 Nhập số ván bắt đầu:</label>
       <input type="number" id="startRound" value="1" min="1"/>
       <button onclick="startGame()">Bắt đầu</button>
     </div>
+
+    <div id="card-input">
+      <h3>🔽 Chọn lá bài ván mới</h3>
+      <p><strong>Nhà Con:</strong></p>
+      
+<select class="card-select">
+  <option value="">-- Chọn --</option>
+  <option value="A">A</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+  <option value="7">7</option>
+  <option value="8">8</option>
+  <option value="9">9</option>
+  <option value="10">10</option>
+  <option value="J">J</option>
+  <option value="Q">Q</option>
+  <option value="K">K</option>
+</select>
+
+<select class="card-select">
+  <option value="">-- Chọn --</option>
+  <option value="A">A</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+  <option value="7">7</option>
+  <option value="8">8</option>
+  <option value="9">9</option>
+  <option value="10">10</option>
+  <option value="J">J</option>
+  <option value="Q">Q</option>
+  <option value="K">K</option>
+</select>
+
+<select class="card-select">
+  <option value="">-- Chọn --</option>
+  <option value="A">A</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+  <option value="7">7</option>
+  <option value="8">8</option>
+  <option value="9">9</option>
+  <option value="10">10</option>
+  <option value="J">J</option>
+  <option value="Q">Q</option>
+  <option value="K">K</option>
+</select>
+
+      <p><strong>Nhà Cái:</strong></p>
+      
+<select class="card-select">
+  <option value="">-- Chọn --</option>
+  <option value="A">A</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+  <option value="7">7</option>
+  <option value="8">8</option>
+  <option value="9">9</option>
+  <option value="10">10</option>
+  <option value="J">J</option>
+  <option value="Q">Q</option>
+  <option value="K">K</option>
+</select>
+
+<select class="card-select">
+  <option value="">-- Chọn --</option>
+  <option value="A">A</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+  <option value="7">7</option>
+  <option value="8">8</option>
+  <option value="9">9</option>
+  <option value="10">10</option>
+  <option value="J">J</option>
+  <option value="Q">Q</option>
+  <option value="K">K</option>
+</select>
+
+<select class="card-select">
+  <option value="">-- Chọn --</option>
+  <option value="A">A</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+  <option value="7">7</option>
+  <option value="8">8</option>
+  <option value="9">9</option>
+  <option value="10">10</option>
+  <option value="J">J</option>
+  <option value="Q">Q</option>
+  <option value="K">K</option>
+</select>
+
+      <button onclick="submitRound()">Thêm ván</button>
+    </div>
+
     <div id="analysis"></div>
     <div id="history"></div>
   </div>

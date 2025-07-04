@@ -1,56 +1,66 @@
 let currentRound = 1;
+let history = [];
 
 function setStartRound() {
-  const input = document.getElementById("roundInput").value;
-  currentRound = parseInt(input) || 1;
-  document.getElementById("currentRoundText").innerText = `Đang ở ván #${currentRound}`;
+  const input = parseInt(document.getElementById("startRound").value);
+  currentRound = input || 1;
+  document.getElementById("currentRoundText").innerText = `Ván hiện tại: #${currentRound}`;
 }
 
 function analyzeImage() {
-  const fileInput = document.getElementById("uploadImage");
   const resultDiv = document.getElementById("analysisResult");
+  const imageInput = document.getElementById("uploadImage");
 
-  if (!fileInput.files || fileInput.files.length === 0) {
-    resultDiv.innerText = "❌ Vui lòng chọn một ảnh trước.";
+  if (!imageInput.files || imageInput.files.length === 0) {
+    resultDiv.innerText = "❌ Bạn chưa chọn ảnh!";
     return;
   }
 
-  const roundNumber = currentRound;
-  currentRound++;
-  document.getElementById("currentRoundText").innerText = `Đang ở ván #${currentRound}`;
+  // 🔄 Mô phỏng nhận diện ảnh (OCR)
+  const v = {
+    round: currentRound,
+    P: ['Q♦', '5♠'],     // bài đứng Player
+    B: ['K♣', '9♥'],     // bài đứng Banker
+    P_extra: [],         // bài rút thêm Player
+    B_extra: ['4♦'],     // bài rút thêm Banker
+    P_point: 5,
+    B_point: 3,
+    winner: 'Player',
+    pp: false,
+    bp: false
+  };
+  history.push(v);
 
-  const mockResult = {
-    playerCards: ['10♥', 'Q♦', '3♦'],
-    bankerCards: ['6♥', 'Q♣'],
-    playerPoints: 3,
-    bankerPoints: 6,
-    winner: 'Banker',
-    isPP: false,
-    isBP: false,
-    tieRate: '8.2%',
-    ppRate: '39.6%',
-    bpRate: '42.7%',
-    bestC: 'C1 – Giữ cầu Cái',
-    C1: '✅ đúng 3 lần',
+  const nextRound = currentRound + 1;
+  const analysis = {
+    C1: '✅ đúng 4 lần',
     C2: '❌',
     C3: '✅ đúng 2 lần',
-    C4: '❌'
+    C4: '❌',
+    best: 'C1 – Giữ cầu Con',
+    mainBet: v.winner,
+    ppRate: '34.8%',
+    bpRate: '38.6%',
+    tieRate: '9.1%'
   };
 
   resultDiv.innerHTML = `
-    <h3>🧠 DỰ ĐOÁN VÁN KẾ TIẾP – VÁN ${roundNumber + 1}</h3>
+    <h3>🧠 DỰ ĐOÁN VÁN KẾ TIẾP – VÁN ${nextRound}</h3>
     <p><b>📌 Phân tích cầu:</b><br>
-    - C1 (Giữ cầu): ${mockResult.C1}<br>
-    - C2 (Cầu nhảy): ${mockResult.C2}<br>
-    - C3 (Lặp 2-1): ${mockResult.C3}<br>
-    - C4 (Đảo cầu): ${mockResult.C4}</p>
+    - C1 (Giữ cầu): ${analysis.C1}<br>
+    - C2 (Cầu nhảy): ${analysis.C2}<br>
+    - C3 (Lặp 2-1): ${analysis.C3}<br>
+    - C4 (Đảo cầu): ${analysis.C4}</p>
 
-    <p>🔮 Cầu mạnh nhất: <b>${mockResult.bestC}</b></p>
+    <p>🔮 Cầu mạnh nhất: <b>${analysis.best}</b></p>
     <p>🎯 GỢI Ý CƯỢC:<br>
-    👉 Cược chính: <b>${mockResult.winner}</b><br>
+    👉 Cược chính: <b>${analysis.mainBet}</b><br>
     ⚖️ Kèo phụ:<br>
-    • 🎲 Hòa (Tie): ${mockResult.tieRate}<br>
-    • 🃏 Con đôi (PP): ${mockResult.ppRate}<br>
-    • 🃏 Cái đôi (BP): ${mockResult.bpRate}</p>
+    • 🎲 Hòa (Tie): ${analysis.tieRate}<br>
+    • 🃏 Con đôi (PP): ${analysis.ppRate}<br>
+    • 🃏 Cái đôi (BP): ${analysis.bpRate}</p>
   `;
+
+  currentRound = nextRound;
+  document.getElementById("currentRoundText").innerText = `Ván hiện tại: #${currentRound}`;
 }

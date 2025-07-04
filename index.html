@@ -8,12 +8,19 @@
 </head>
 <body>
   <h1>🧠 Baccarat Insight v2.4 – Phân tích từ ảnh</h1>
+
+  <div class="round-section">
+    <label for="roundInput">🔢 Nhập số ván hiện tại:</label>
+    <input type="number" id="roundInput" min="1" value="1" />
+  </div>
+
   <div class="upload-section">
     <h2>📷 Gửi ảnh lá bài mỗi ván</h2>
     <input type="file" id="uploadImage" accept="image/*" />
-    <button onclick="analyzeImage()">📊 Phân tích ảnh</button>
+    <button onclick="analyzeImage()">📊 Phân tích ảnh & Tính cầu</button>
     <div id="analysisResult">👉 Chưa có ảnh được phân tích.</div>
   </div>
+
   <script src="app.js"></script>
 </body>
 </html>

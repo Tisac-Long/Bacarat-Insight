@@ -43,9 +43,3 @@ button {
   border-radius: 6px;
   border: 1px solid #ccc;
 }
-  border: none;
-  cursor: pointer;
-}
-#results {
-  margin-top: 20px;
-}

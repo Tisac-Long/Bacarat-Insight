@@ -1,0 +1,29 @@
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #111;
+  color: #eee;
+  padding: 20px;
+}
+.app {
+  max-width: 800px;
+  margin: auto;
+  background: #1a1a1a;
+  padding: 20px;
+  border-radius: 10px;
+}
+input[type="number"], input[type="file"] {
+  padding: 8px;
+  margin-top: 10px;
+  width: 100%;
+}
+button {
+  margin-top: 10px;
+  padding: 10px;
+  width: 100%;
+  background: crimson;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}

@@ -4,33 +4,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Baccarat Insight v2.4 PRO</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Baccarat Insight v2.5 Pro</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Baccarat Insight v2.4 PRO</h1>
-  <div class="prediction-box" id="predictionBox">
-    <h2>🧠 DỰ ĐOÁN VÁN KẾ TIẾP – VÁN <span id="nextRound">?</span></h2>
-    <pre id="predictionContent">Nhập ít nhất 4 ván để phân tích...</pre>
-  </div>
-  <div class="card-input">
-    <label for="startRound">Số ván bắt đầu:</label>
-    <input type="number" id="startRound" placeholder="VD: 1" />
-    <button onclick="startSession()">Bắt đầu</button>
-  </div>
-  <div id="inputSection" style="display:none;">
-    <h3>Ván hiện tại: <span id="currentRound">?</span></h3>
-    <div>
-      <label>Lá bài CON:</label>
-      <select id="p1"></select><select id="p2"></select><select id="p3"></select>
+  <div class="app">
+    <h1>Baccarat Insight v2.5 Pro</h1>
+    <div id="image-upload">
+      <p>📷 Gửi ảnh ván bài để phân tích</p>
+      <input type="file" id="imageInput" accept="image/*" />
     </div>
-    <div>
-      <label>Lá bài CÁI:</label>
-      <select id="b1"></select><select id="b2"></select><select id="b3"></select>
+    <div id="round-input">
+      <label for="startRound">🔢 Nhập số ván bắt đầu:</label>
+      <input type="number" id="startRound" value="1" min="1"/>
+      <button onclick="startGame()">Bắt đầu</button>
     </div>
-    <button onclick="submitRound()">➕ Thêm ván</button>
+    <div id="analysis"></div>
+    <div id="history"></div>
   </div>
-  <div id="results"></div>
   <script src="app.js"></script>
 </body>
 </html>

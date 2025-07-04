@@ -1,110 +1,49 @@
 
-let round = 1;
+let currentRound = 1;
 let history = [];
-let prediction = null;
-const ranks = ["", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 
-function startSession() {
-  round = parseInt(document.getElementById("startRound").value) || 1;
-  document.getElementById("inputSection").style.display = "block";
-  document.getElementById("currentRound").innerText = round;
-  document.getElementById("nextRound").innerText = round;
-  const ids = ["p1", "p2", "p3", "b1", "b2", "b3"];
-  ids.forEach(id => {
-    const el = document.getElementById(id);
-    el.innerHTML = ranks.map(r => `<option value='${r}'>${r}</option>`).join("");
-  });
+function startGame() {
+  const startInput = document.getElementById("startRound");
+  currentRound = parseInt(startInput.value);
+  document.getElementById("analysis").innerHTML = "<p>📌 Hãy gửi ảnh ván bài...</p>";
 }
 
-function cardValue(card) {
-  if (["10", "J", "Q", "K"].includes(card)) return 0;
-  if (card === "A") return 1;
-  return parseInt(card || "0") || 0;
-}
+document.getElementById("imageInput").addEventListener("change", function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
 
-function calculatePoints(cards) {
-  return cards.map(cardValue).reduce((a, b) => a + b, 0) % 10;
-}
-
-function submitRound() {
-  const pc = [p1.value, p2.value, p3.value].filter(c => c);
-  const bc = [b1.value, b2.value, b3.value].filter(c => c);
-  const pp = calculatePoints(pc);
-  const bp = calculatePoints(bc);
-  let winner = "Hòa";
-  if (pp > bp) winner = "Con thắng";
-  else if (bp > pp) winner = "Cái thắng";
-
-  const data = {
-    round: round,
-    playerCards: pc,
-    bankerCards: bc,
-    playerPoint: pp,
-    bankerPoint: bp,
-    winner: winner,
-    playerPair: pc.length >= 2 && pc[0] === pc[1],
-    bankerPair: bc.length >= 2 && bc[0] === bc[1],
-    predicted: prediction ? prediction.guess : "",
-    correct: prediction ? (prediction.guess === winner ? "✅" : "❌") : ""
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    const imgData = evt.target.result;
+    analyzeImage(imgData); // giả lập phân tích ảnh
   };
+  reader.readAsDataURL(file);
+});
 
-  history.push(data);
-  round++;
-  document.getElementById("currentRound").innerText = round;
-  document.getElementById("nextRound").innerText = round;
-  resetDropdowns();
-  displayHistory();
-  makePrediction();
-}
+function analyzeImage(img) {
+  // 🔍 Đây là phần xử lý ảnh (giả lập tạm thời)
+  const lastS = 5; // ví dụ 5 lá bài ván trước
+  const T = 3;     // ví dụ Cái thắng 3 lần
+  const X = currentRound - lastS + T;
 
-function resetDropdowns() {
-  ["p1", "p2", "p3", "b1", "b2", "b3"].forEach(id => {
-    document.getElementById(id).selectedIndex = 0;
-  });
-}
+  const even = X % 2 === 0;
+  const giaiThich = even ? "Chẵn → 🟥 Cái" : "Lẻ → 🟦 Con";
 
-function displayHistory() {
-  let html = "<h3>🧾 Lịch sử ván đã nhập</h3><ul>";
-  history.forEach(r => {
-    html += `<li>V${r.round}: Con [${r.playerCards.join()}] (${r.playerPoint}) - Cái [${r.bankerCards.join()}] (${r.bankerPoint}) → <b>${r.winner}</b>`;
-    if (r.playerPair) html += " 🔵 PP";
-    if (r.bankerPair) html += " 🔴 BP";
-    if (r.predicted) html += ` | 🧠 Dự đoán: ${r.predicted} ${r.correct}`;
-    html += "</li>";
-  });
-  html += "</ul>";
-  document.getElementById("results").innerHTML = html;
-}
+  const ppRate = (Math.random() * 40 + 20).toFixed(1);
+  const bpRate = (Math.random() * 40 + 20).toFixed(1);
+  const tieRate = (Math.random() * 10 + 5).toFixed(1);
 
-function makePrediction() {
-  if (history.length < 4) {
-    prediction = null;
-    document.getElementById("predictionContent").innerText = "Nhập ít nhất 4 ván để phân tích...";
-    return;
-  }
-
-  const last = history[history.length - 1];
-  const prev = history[history.length - 2];
-  const guess = last.winner === prev.winner ? last.winner : (last.winner === "Cái thắng" ? "Con thắng" : "Cái thắng");
-  const ppRate = (history.filter(r => r.playerPair).length / history.length * 100).toFixed(1);
-  const bpRate = (history.filter(r => r.bankerPair).length / history.length * 100).toFixed(1);
-  const tieRate = (history.filter(r => r.winner === "Hòa").length / history.length * 100).toFixed(1);
-
-  prediction = { guess };
-  document.getElementById("predictionContent").innerText = `🧠 DỰ ĐOÁN VÁN KẾ TIẾP – VÁN ${round}
-───────────────────────────────
-📌 Phân tích cầu:
-- C1 (Giữ cầu): ✅
-- C2 (Cầu nhảy): ❌
-- C3 (Lặp 2-1): ✅
-- C4 (Đảo cầu): ❌
-
-🔮 Cầu mạnh nhất: C1 – Giữ cầu ${guess}
-
-🎯 GỢI Ý CƯỢC:
-- 👉 Cược chính: ${guess === "Con thắng" ? "🟦 Con" : "🟥 Cái"} 
-- ⚖️ Kèo phụ:
-  • 🎲 Hòa (Tie): ${tieRate}%
-  • 🃏 Con đôi (PP): ${ppRate}%
-  • 🃏 Cái đôi (BP): ${bpRate}%`;
+  const resultHTML = `
+    <h2>🧠 DỰ ĐOÁN VÁN KẾ TIẾP – VÁN ${currentRound}</h2>
+    <p>📐 V - S + T = ${currentRound} - ${lastS} + ${T} = ${X} → ${giaiThich}</p>
+    <p>🎯 GỢI Ý CƯỢC CHÍNH: ${even ? "🟥 Cái" : "🟦 Con"}</p>
+    <p>⚖️ Kèo phụ:
+      <br/>🃏 Con đôi (PP): ${ppRate}%
+      <br/>🃏 Cái đôi (BP): ${bpRate}%
+      <br/>🎲 Hòa (Tie): ${tieRate}%
+    </p>
+  `;
+  document.getElementById("analysis").innerHTML = resultHTML;
+  history.push({ round: currentRound, x: X, even, ppRate, bpRate, tieRate });
+  currentRound += 1;
 }

@@ -1,0 +1,6 @@
+
+body { font-family: sans-serif; padding: 20px; background: #f9f9f9; }
+h1 { text-align: center; color: #2c3e50; }
+select, input, button { margin: 5px; padding: 6px; }
+.prediction-box { background: #fffbe6; border-left: 6px solid #faad14; padding: 15px; margin-bottom: 20px; }
+pre { white-space: pre-wrap; font-size: 1em; }

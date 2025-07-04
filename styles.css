@@ -1,45 +1,6 @@
-body {
-  font-family: sans-serif;
-  margin: 20px;
-  background: #f8f9fa;
-  color: #222;
-}
-h1 {
-  text-align: center;
-  color: #0066cc;
-}
-.card-input, #inputSection {
-  margin-bottom: 20px;
-}
-select, input {
-  margin: 4px;
-  padding: 4px;
-}
-button {
-  padding: 6px 12px;
-  background-color: #007acc;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-.prediction-box {
-  border: 2px solid #ffe58f;
-  background: #fffbe6;
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 8px;
-}
-.prediction-box h2 {
-  margin-top: 0;
-  color: #d48806;
-}
-.highlight {
-  color: #d4380d;
-  font-weight: bold;
-}
-#results {
-  background: #ffffff;
-  padding: 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
+
+body { font-family: sans-serif; padding: 20px; background: #f9f9f9; }
+h1 { text-align: center; color: #2c3e50; }
+select, input, button { margin: 5px; padding: 6px; }
+.prediction-box { background: #fffbe6; border-left: 6px solid #faad14; padding: 15px; margin-bottom: 20px; }
+pre { white-space: pre-wrap; font-size: 1em; }

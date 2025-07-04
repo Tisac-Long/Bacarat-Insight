@@ -3,22 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Baccarat Insight v2.4</title>
+  <title>Baccarat Insight v2.4 Pro – Ảnh lá bài</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>🧠 Baccarat Insight v2.4 – Phân tích từ ảnh</h1>
+  <h1>🧠 Baccarat Insight v2.4 Pro – Phân tích ảnh lá bài</h1>
 
   <div class="round-section">
-    <label for="roundInput">🔢 Nhập số ván hiện tại:</label>
+    <label for="roundInput">🔢 Nhập số ván đầu tiên:</label>
     <input type="number" id="roundInput" min="1" value="1" />
+    <button onclick="setStartRound()">✅ Xác nhận</button>
+    <p id="currentRoundText">Đang ở ván #1</p>
   </div>
 
   <div class="upload-section">
-    <h2>📷 Gửi ảnh lá bài mỗi ván</h2>
+    <h2>📷 Gửi ảnh lá bài</h2>
     <input type="file" id="uploadImage" accept="image/*" />
-    <button onclick="analyzeImage()">📊 Phân tích ảnh & Tính cầu</button>
-    <div id="analysisResult">👉 Chưa có ảnh được phân tích.</div>
+    <button onclick="analyzeImage()">📊 Phân tích & Dự đoán</button>
+    <div id="analysisResult">👉 Chưa có ảnh nào được phân tích.</div>
   </div>
 
   <script src="app.js"></script>

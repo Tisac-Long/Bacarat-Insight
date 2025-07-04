@@ -1,18 +1,23 @@
-let lastRound = 0;
+let currentRound = 1;
+
+function setStartRound() {
+  const input = document.getElementById("roundInput").value;
+  currentRound = parseInt(input) || 1;
+  document.getElementById("currentRoundText").innerText = `Đang ở ván #${currentRound}`;
+}
 
 function analyzeImage() {
-  const roundInput = document.getElementById("roundInput");
-  const resultDiv = document.getElementById("analysisResult");
   const fileInput = document.getElementById("uploadImage");
+  const resultDiv = document.getElementById("analysisResult");
 
   if (!fileInput.files || fileInput.files.length === 0) {
     resultDiv.innerText = "❌ Vui lòng chọn một ảnh trước.";
     return;
   }
 
-  const roundNumber = parseInt(roundInput.value);
-  lastRound = roundNumber + 1;
-  roundInput.value = lastRound;
+  const roundNumber = currentRound;
+  currentRound++;
+  document.getElementById("currentRoundText").innerText = `Đang ở ván #${currentRound}`;
 
   const mockResult = {
     playerCards: ['10♥', 'Q♦', '3♦'],
@@ -33,7 +38,7 @@ function analyzeImage() {
   };
 
   resultDiv.innerHTML = `
-    <h3>🧠 DỰ ĐOÁN VÁN KẾ TIẾP – VÁN ${lastRound}</h3>
+    <h3>🧠 DỰ ĐOÁN VÁN KẾ TIẾP – VÁN ${roundNumber + 1}</h3>
     <p><b>📌 Phân tích cầu:</b><br>
     - C1 (Giữ cầu): ${mockResult.C1}<br>
     - C2 (Cầu nhảy): ${mockResult.C2}<br>

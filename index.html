@@ -1,34 +1,33 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Baccarat Insight v2.5.1 Pro</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Baccarat Insight v2.7 PRO</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="app">
-    <h1>Baccarat Insight v2.5.1 Pro</h1>
-
-    <div id="round-input">
-      <label for="startRound">🔢 Nhập số ván bắt đầu:</label>
-      <input type="number" id="startRound" value="1" min="1"/>
-      <button onclick="startGame()">Bắt đầu</button>
+  <div id="app">
+    <h1>🔮 DỰ ĐOÁN VÁN KẾ TIẾP</h1>
+    <div id="predictionBox"></div>
+    <h2>🎴 NHẬP LÁ BÀI VÁN <span id="vanSo">1</span></h2>
+    <div class="input-row">
+      <label>🔵 Con:</label>
+      <select class="card-input" id="p1"></select>
+      <select class="card-input" id="p2"></select>
+      <select class="card-input" id="p3"></select>
     </div>
-
-    <div id="card-input">
-      <h3>🔽 Chọn lá bài ván mới</h3>
-      <p><strong>Nhà Con:</strong></p>
-      
-<select class="card-select">
-  <option value="">-- Chọn --</option>
-  <option value="A">A</option>
-  <option value="2">2</option>
-  <option value="3">3</option>
-  <option value="4">4</option>
-  <option value="5">5</option>
-  <option value="6">6</option>
+    <div class="input-row">
+      <label>🔴 Cái:</label>
+      <select class="card-input" id="b1"></select>
+      <select class="card-input" id="b2"></select>
+      <select class="card-input" id="b3"></select>
+    </div>
+    <button onclick="submitGame()">+ Thêm ván mới</button>
+    <div id="resultBox"></div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
   <option value="7">7</option>
   <option value="8">8</option>
   <option value="9">9</option>

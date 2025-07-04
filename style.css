@@ -1,20 +1,17 @@
 body {
-  font-family: 'Arial', sans-serif;
-  background: #f4f4f4;
-  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
   color: #333;
-}
-h1 {
-  color: #b30000;
-}
-.setup, .upload-section {
-  background: white;
   padding: 20px;
-  margin-top: 10px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
 }
-input[type="file"], input[type="number"], button {
-  margin-top: 10px;
-  display: block;
+
+.upload-section {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+input[type="file"] {
+  margin-bottom: 10px;
 }

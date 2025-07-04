@@ -1,59 +1,96 @@
-
-let currentRound = 1;
+const cards = ['','A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+let van = 1;
 let history = [];
 
-function startGame() {
-  const startInput = document.getElementById("startRound");
-  currentRound = parseInt(startInput.value);
-  document.getElementById("analysis").innerHTML = "<p>📌 Hãy chọn lá bài để phân tích ván tiếp theo...</p>";
+window.onload = () => {
+  document.querySelectorAll('.card-input').forEach(sel => {
+    cards.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c;
+      opt.text = c;
+      sel.appendChild(opt);
+    });
+  });
+  updateVanDisplay();
 }
 
-function getCardPoint(card) {
+function cardValue(card) {
   if (!card) return 0;
-  if (["J", "Q", "K", "10"].includes(card)) return 0;
-  if (card === "A") return 1;
+  if (card === 'A') return 1;
+  if (['10','J','Q','K'].includes(card)) return 0;
   return parseInt(card);
 }
 
-function submitRound() {
-  const selects = document.querySelectorAll(".card-select");
-  const conCards = Array.from(selects).slice(0, 3).map(s => s.value).filter(v => v);
-  const caiCards = Array.from(selects).slice(3, 6).map(s => s.value).filter(v => v);
+function calcPoints(cards) {
+  return cards.reduce((a,b)=>a+cardValue(b),0)%10;
+}
 
-  const conPoints = conCards.map(getCardPoint).reduce((a, b) => a + b, 0) % 10;
-  const caiPoints = caiCards.map(getCardPoint).reduce((a, b) => a + b, 0) % 10;
+function isPair(c1, c2) {
+  return c1 && c2 && c1 === c2;
+}
 
-  const result = conPoints > caiPoints ? "🟦 Con" : conPoints < caiPoints ? "🟥 Cái" : "🎲 Hòa";
+function submitGame() {
+  const pCards = [p1.value, p2.value].filter(c => c);
+  if (p3.value) pCards.push(p3.value);
+  const bCards = [b1.value, b2.value].filter(c => c);
+  if (b3.value) bCards.push(b3.value);
 
-  const PP = conCards.length >= 2 && conCards[0] === conCards[1];
-  const BP = caiCards.length >= 2 && caiCards[0] === caiCards[1];
+  const pPoint = calcPoints(pCards);
+  const bPoint = calcPoints(bCards);
+  let result = bPoint > pPoint ? 'B' : pPoint > bPoint ? 'P' : 'T';
+  const pp = isPair(p1.value, p2.value);
+  const bp = isPair(b1.value, b2.value);
+  const game = {van, pCards, bCards, pPoint, bPoint, result, pp, bp};
+  history.push(game);
+  showPrediction();
+  van++;
+  clearSelects();
+  updateVanDisplay();
+}
 
-  const lastS = conCards.length + caiCards.length;
-  const T = history.filter(h => h.result === "🟥 Cái").length % 5;
-  const X = currentRound - lastS + T;
-  const even = X % 2 === 0;
+function showPrediction() {
+  const prev = history.at(-1);
+  if (!prev) return;
+  const len = prev.pCards.length + prev.bCards.length;
+  const t = history.length >= 2 && history.at(-2).result === prev.result ? 1 : 0;
+  const logic = van - len + t;
+  const guess = logic % 2 === 0 ? 'B' : 'P';
 
-  const giaiThich = even ? "Chẵn → 🟥 Cái" : "Lẻ → 🟦 Con";
-  const ppRate = PP ? "Xảy ra" : (Math.random() * 40 + 10).toFixed(1) + "%";
-  const bpRate = BP ? "Xảy ra" : (Math.random() * 40 + 10).toFixed(1) + "%";
-  const tieRate = (Math.random() * 10 + 5).toFixed(1) + "%";
+  const C1 = history.length >= 2 && history.at(-1).result === history.at(-2).result;
+  const C2 = history.length >= 3 &&
+             history.at(-3).result !== history.at(-2).result &&
+             history.at(-2).result !== history.at(-1).result;
+  const C3 = history.length >= 3 &&
+             history.at(-3).result === history.at(-2).result &&
+             history.at(-1).result !== history.at(-2).result;
+  const C4 = history.length >= 4 &&
+             history.at(-4).result === history.at(-3).result &&
+             history.at(-2).result !== history.at(-3).result;
 
-  const resultHTML = `
-    <h2>🧠 DỰ ĐOÁN VÁN KẾ TIẾP – VÁN ${currentRound}</h2>
-    <p>📐 V - S + T = ${currentRound} - ${lastS} + ${T} = ${X} → ${giaiThich}</p>
-    <p>🎯 GỢI Ý CƯỢC CHÍNH: ${even ? "🟥 Cái" : "🟦 Con"}</p>
-    <p>⚖️ Kèo phụ:
-      <br/>🃏 Con đôi (PP): ${ppRate}
-      <br/>🃏 Cái đôi (BP): ${bpRate}
-      <br/>🎲 Hòa (Tie): ${tieRate}
-    </p>
-    <p>✅ Kết quả ván ${currentRound}: ${result}</p>
+  const predictionBox = document.getElementById('predictionBox');
+  predictionBox.innerHTML = `
+  <pre>
+🧠 DỰ ĐOÁN VÁN KẾ TIẾP – VÁN ${van}
+───────────────────────────────
+📌 Phân tích cầu:
+- C1 (Giữ cầu): ${C1 ? '✅' : '❌'}
+- C2 (Cầu nhảy): ${C2 ? '✅' : '❌'}
+- C3 (Lặp 2-1): ${C3 ? '✅' : '❌'}
+- C4 (Đảo cầu): ${C4 ? '✅' : '❌'}
+
+🔮 Gợi ý cầu chính: ${guess === 'B' ? '🟥 Cái' : '🟦 Con'}
+
+🎯 Kèo phụ:
+• 🃏 Con đôi (PP): ${prev.pp ? '✅' : '❌'}
+• 🃏 Cái đôi (BP): ${prev.bp ? '✅' : '❌'}
+</pre>
   `;
+}
 
-  document.getElementById("analysis").innerHTML = resultHTML;
-  history.push({ round: currentRound, con: conCards, cai: caiCards, result });
-  currentRound++;
+function clearSelects() {
+  document.querySelectorAll('.card-input').forEach(sel => sel.value = '');
+}
 
-  // reset dropdown
-  document.querySelectorAll(".card-select").forEach(select => select.selectedIndex = 0);
+function updateVanDisplay() {
+  document.getElementById('vanSo').textContent = van;
 }

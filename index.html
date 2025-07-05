@@ -1,30 +1,90 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <title>Baccarat Insight v3.2 PRO+</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Baccarat Insight v3.3 PRO+</title>
+  <style>
+    body { font-family: Arial; margin: 20px; }
+    h1 { color: #c0392b; }
+    h2 { color: #2980b9; margin-top: 30px; }
+    .prediction-box {
+      background: #f9f9f9;
+      padding: 15px;
+      border: 2px dashed #aaa;
+      margin-bottom: 20px;
+    }
+    select, button, input {
+      margin: 5px; padding: 6px;
+      font-size: 16px;
+    }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    .ppbp { font-size: 13px; color: #666; }
+  </style>
 </head>
 <body>
-    <h1>🧠 DỰ ĐOÁN VÁN KẾ TIẾP</h1>
-    <div id="predictionBox"></div>
 
-    <h2>🎴 Nhập lá bài</h2>
-    <label>Con:</label>
-    <select id="playerCard1"></select>
-    <select id="playerCard2"></select>
-    <label>Cái:</label>
-    <select id="bankerCard1"></select>
-    <select id="bankerCard2"></select>
-    <button onclick="addRound()">➕ Thêm ván mới</button>
+  <h1>🧠 DỰ ĐOÁN VÁN KẾ TIẾP – VÁN 6</h1>
+  <div class="prediction-box">
+    <b>📌 Phân tích cầu:</b><br/>
+    - C1 (Giữ cầu): ✅ ĐÚNG 3 lần<br/>
+    - C2 (Cầu nhảy): ❌<br/>
+    - C3 (2-1): ✅ ĐÚNG 1 lần<br/>
+    - C4 (Đảo chiều): ❌<br/><br/>
 
-    <h2>📋 Lịch sử</h2>
-    <table id="historyTable">
-        <thead><tr><th>Ván</th><th>Con</th><th>Cái</th><th>Điểm</th><th>Kết quả</th><th>Dự đoán</th><th>Đúng/Sai</th></tr></thead>
-        <tbody></tbody>
-    </table>
+    <b>🔮 Cầu mạnh nhất:</b> C1 – Giữ cầu Cái<br/><br/>
 
-    <script src="app.js"></script>
+    🎯 <b>GỢI Ý CƯỢC:</b><br/>
+    👉 Cược chính: 🟥 <b>Cái</b> (63.5%)<br/>
+    ⚖️ Kèo phụ:<br/>
+    • 🎲 Hòa (Tie): 8.2%<br/>
+    • 🃏 Con đôi (PP): 41.0%<br/>
+    • 🃏 Cái đôi (BP): 38.7%
+  </div>
+
+  <h2>🎴 Nhập lá bài ván 5</h2>
+  <label>Ván bắt đầu: <input type="number" value="1" style="width:80px"/></label><br/>
+  <label>Con:</label>
+  <select><option>A</option><option>2</option><option>3</option><option>4</option>
+    <option>5</option><option>6</option><option>7</option><option>8</option>
+    <option>9</option><option>10</option><option>J</option><option>Q</option><option>K</option>
+  </select>
+  <select><option>...</option></select>
+  <select><option>...</option></select><br/>
+
+  <label>Cái:</label>
+  <select><option>...</option></select>
+  <select><option>...</option></select>
+  <select><option>...</option></select><br/>
+
+  <button>➕ Thêm ván mới</button>
+
+  <h2>📋 Lịch sử các ván</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Ván</th><th>Con</th><th>Cái</th><th>Điểm</th><th>Kết quả</th>
+        <th>Dự đoán</th><th>Đúng/Sai</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td><td>9,9,0</td><td>8,8</td><td>8 - 6</td><td>Con</td><td>Con</td><td>✅</td>
+      </tr>
+      <tr>
+        <td>2</td><td>6,6</td><td>7,7,1</td><td>2 - 5</td><td>Cái</td><td>Con</td><td>❌</td>
+      </tr>
+      <tr>
+        <td>3</td><td>2,2</td><td>3,3</td><td>4 - 6</td><td>Cái</td><td>Cái</td><td>✅</td>
+      </tr>
+      <tr>
+        <td>4</td><td>4,7,5</td><td>6,1</td><td>6 - 7</td><td>Cái</td><td>Cái</td><td>✅</td>
+      </tr>
+      <tr>
+        <td>5</td><td>Q,Q</td><td>10,10</td><td>0 - 0</td><td>Hòa</td><td>Cái</td><td>❌</td>
+      </tr>
+    </tbody>
+  </table>
+
 </body>
 </html>

@@ -1,6 +1,15 @@
-
-body { font-family: Arial; padding: 20px; }
-h1, h2 { color: #333; }
-select, button { margin: 5px; padding: 5px; }
+body { font-family: Arial; margin: 20px; }
+h1 { color: #c0392b; }
+h2 { color: #2980b9; margin-top: 30px; }
+.prediction-box {
+  background: #f9f9f9;
+  padding: 15px;
+  border: 2px dashed #aaa;
+  margin-bottom: 20px;
+}
+select, button, input {
+  margin: 5px; padding: 6px;
+  font-size: 16px;
+}
 table { width: 100%; border-collapse: collapse; margin-top: 20px; }
 th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }

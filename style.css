@@ -1,11 +1,11 @@
 body {
   font-family: Arial, sans-serif;
-  background: #121212;
+  background: #111;
   color: #eee;
   padding: 20px;
 }
 #app {
-  max-width: 640px;
+  max-width: 700px;
   margin: auto;
 }
 input, select {
@@ -29,4 +29,14 @@ pre {
   padding: 10px;
   white-space: pre-wrap;
   border-radius: 8px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+th, td {
+  border: 1px solid #555;
+  padding: 6px;
+  text-align: center;
 }

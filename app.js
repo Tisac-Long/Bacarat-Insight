@@ -2,8 +2,15 @@ const cards = ['','A','2','3','4','5','6','7','8','9','10','J','Q','K'];
 let van = 1;
 let history = [];
 let allCards = [];
+let cardCount = {};
+
+const initDeck = () => {
+  cardCount = {};
+  cards.slice(1).forEach(c => cardCount[c] = 8 * 4); // 8 bộ bài
+};
 
 window.onload = () => {
+  initDeck();
   document.querySelectorAll('.card-input').forEach(sel => {
     cards.forEach(c => {
       const opt = document.createElement('option');
@@ -16,9 +23,11 @@ window.onload = () => {
 }
 
 function setStartingVan() {
-  const startVal = parseInt(document.getElementById('startVan').value);
-  van = isNaN(startVal) ? 1 : startVal;
-  updateVanDisplay();
+  const val = parseInt(document.getElementById('startVan').value);
+  if (!isNaN(val)) {
+    van = val;
+    updateVanDisplay();
+  }
 }
 
 function cardValue(card) {
@@ -36,6 +45,62 @@ function isPair(c1, c2) {
   return c1 && c2 && c1 === c2;
 }
 
+function submitGame() {
+  const pCards = [p1.value, p2.value];
+  if (p3.value) pCards.push(p3.value);
+  const bCards = [b1.value, b2.value];
+  if (b3.value) bCards.push(b3.value);
+
+  const pPoint = calcPoints(pCards);
+  const bPoint = calcPoints(bCards);
+  const result = bPoint > pPoint ? 'B' : pPoint > bPoint ? 'P' : 'T';
+  const pp = isPair(p1.value, p2.value);
+  const bp = isPair(b1.value, b2.value);
+
+  let check = '';
+  if (lastPrediction) {
+    check = (lastPrediction === result) ? '✅' : '❌';
+  }
+
+  // Trừ số lượng lá đã lật
+  [...pCards, ...bCards].forEach(c => {
+    if (c && cardCount[c] > 0) cardCount[c]--;
+  });
+
+  const game = {van, result, pp, bp, tie: result === 'T'};
+  history.push(game);
+  allCards.push(...pCards, ...bCards);
+
+  const row = document.createElement('tr');
+  row.innerHTML = `<td>${van}</td><td>${result}</td><td>${lastPrediction || '-'}</td><td>${check}</td><td>${pp ? '✅' : ''}</td><td>${bp ? '✅' : ''}</td><td>${result==='T'?'✅':''}</td>`;
+  document.querySelector('#historyTable tbody').appendChild(row);
+
+  van++;
+  updateVanDisplay();
+  document.querySelectorAll('.card-input').forEach(sel => sel.value = '');
+
+  showPrediction();
+}
+
+function estimatePairProb() {
+  const totalLeft = Object.values(cardCount).reduce((a,b)=>a+b, 0);
+  let pp = 0, bp = 0;
+  cards.slice(1).forEach(c => {
+    const n = cardCount[c];
+    if (n >= 2) {
+      const prob = (n / totalLeft) * ((n - 1) / (totalLeft - 1));
+      pp += prob;
+      bp += prob;
+    }
+  });
+  return {pp: (pp * 100).toFixed(1), bp: (bp * 100).toFixed(1)};
+}
+
+function estimateTieProb() {
+  let tie = 9.0; // Ước lượng gần đúng
+  return tie.toFixed(1);
+}
+
 function countPattern(patternFn) {
   return history.reduce((acc, g, i, arr) => {
     if (patternFn(i, arr)) acc++;
@@ -43,37 +108,12 @@ function countPattern(patternFn) {
   }, 0);
 }
 
-function submitGame() {
-  const pCards = [p1.value, p2.value].filter(c => c);
-  if (p3.value) pCards.push(p3.value);
-  const bCards = [b1.value, b2.value].filter(c => c);
-  if (b3.value) bCards.push(b3.value);
-
-  // Dự đoán dựa vào các ván trước
-  showPrediction();
-
-  const pPoint = calcPoints(pCards);
-  const bPoint = calcPoints(bCards);
-  const result = bPoint > pPoint ? 'B' : pPoint > bPoint ? 'P' : 'T';
-  const pp = isPair(p1.value, p2.value);
-  const bp = isPair(b1.value, b2.value);
-  const game = {van, pCards, bCards, pPoint, bPoint, result, pp, bp};
-  history.push(game);
-
-  allCards.push(...pCards, ...bCards);
-
-  van++;
-  clearSelects();
-  updateVanDisplay();
-}
-
 function showPrediction() {
   const n = history.length;
   if (n < 1) return;
 
-  // Sử dụng công thức mới:
   const last = history[n - 1];
-  const cardsUsed = last.pCards.length + last.bCards.length;
+  const cardsUsed = 6;
 
   const GC = countPattern((i, arr) => i >= 1 && arr[i].result === arr[i-1].result);
   const LC = countPattern((i, arr) => i >= 2 && arr[i-2].result === arr[i-1].result && arr[i].result !== arr[i-1].result);
@@ -81,35 +121,29 @@ function showPrediction() {
 
   let score = (GC * 2) + (LC * 1.5) - (DC * 1.2) + (cardsUsed / 3);
   let guess = Math.round(score) % 2 === 0 ? 'B' : 'P';
+  lastPrediction = guess;
 
-  const ppRate = (history.filter(g=>g.pp).length / history.length * 100).toFixed(1);
-  const bpRate = (history.filter(g=>g.bp).length / history.length * 100).toFixed(1);
-  const tieRate = (history.filter(g=>g.result==='T').length / history.length * 100).toFixed(1);
+  const pairProbs = estimatePairProb();
+  const tieProb = estimateTieProb();
 
   const predictionBox = document.getElementById('predictionBox');
   predictionBox.innerHTML = `
 <pre>
 🧠 DỰ ĐOÁN VÁN KẾ TIẾP – VÁN ${van}
 ───────────────────────────────
-📌 Phân tích logic:
-- Giữ cầu (C1): ${GC}
-- Lặp 2-1 (C3): ${LC}
-- Đảo cầu (C4): ${DC}
-- Lá bài ván trước: ${cardsUsed}
-- Điểm tổng: ${score.toFixed(1)}
+📌 Cầu:
+- C1 (Giữ cầu): ${GC}
+- C3 (Lặp 2-1): ${LC}
+- C4 (Đảo cầu): ${DC}
 
 🔮 Gợi ý cược chính: ${guess === 'B' ? '🟥 Cái' : '🟦 Con'}
 
-🎯 KÈO PHỤ:
-• 🃏 Con đôi (PP): ${ppRate}%
-• 🃏 Cái đôi (BP): ${bpRate}%
-• 🎲 Hòa (Tie): ${tieRate}%
+🎯 KÈO PHỤ – DỰ ĐOÁN:
+• 🃏 Con đôi (PP): ${pairProbs.pp}%
+• 🃏 Cái đôi (BP): ${pairProbs.bp}%
+• 🎲 Hòa (Tie): ${tieProb}%
 </pre>
   `;
-}
-
-function clearSelects() {
-  document.querySelectorAll('.card-input').forEach(sel => sel.value = '');
 }
 
 function updateVanDisplay() {

@@ -25,16 +25,13 @@ function getResult(pCards, bCards) {
 
 function predictNextGame(history) {
   if (history.length === 0) return { main: 'Banker', pp: 38, bp: 41, tie: 8 };
-
   const last = history[history.length - 1];
   const prev = history[history.length - 2] || {};
   const v = history.length + 1;
   const s = last.playerCards.length + last.bankerCards.length;
   const t = (last.result === prev.result) ? 1 : 0;
   const formula = (v - s + t) % 2;
-
   const main = (formula === 0) ? 'Banker' : 'Player';
-
   return {
     main,
     pp: Math.floor(Math.random() * 30 + 35),

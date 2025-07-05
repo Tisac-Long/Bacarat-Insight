@@ -1,151 +1,91 @@
-const cards = ['','A','2','3','4','5','6','7','8','9','10','J','Q','K'];
-let van = 1;
+
+const ranks = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
 let history = [];
-let allCards = [];
-let cardCount = {};
+let currentRound = 0;
 
-const initDeck = () => {
-  cardCount = {};
-  cards.slice(1).forEach(c => cardCount[c] = 8 * 4); // 8 bộ bài
-};
-
-window.onload = () => {
-  initDeck();
-  document.querySelectorAll('.card-input').forEach(sel => {
-    cards.forEach(c => {
-      const opt = document.createElement('option');
-      opt.value = c;
-      opt.text = c;
-      sel.appendChild(opt);
+function populateDropdowns() {
+    const selects = ['playerCard1','playerCard2','bankerCard1','bankerCard2'];
+    selects.forEach(id => {
+        const sel = document.getElementById(id);
+        sel.innerHTML = '<option value="">--</option>';
+        ranks.forEach(r => {
+            const opt = document.createElement('option');
+            opt.value = opt.text = r;
+            sel.add(opt);
+        });
     });
-  });
-  updateVanDisplay();
 }
 
-function setStartingVan() {
-  const val = parseInt(document.getElementById('startVan').value);
-  if (!isNaN(val)) {
-    van = val;
-    updateVanDisplay();
-  }
-}
-
-function cardValue(card) {
-  if (!card) return 0;
-  if (card === 'A') return 1;
-  if (['10','J','Q','K'].includes(card)) return 0;
-  return parseInt(card);
+function cardValue(c) {
+    if (c === 'A') return 1;
+    if (['10','J','Q','K'].includes(c)) return 0;
+    return parseInt(c);
 }
 
 function calcPoints(cards) {
-  return cards.reduce((a,b)=>a+cardValue(b),0)%10;
+    return cards.map(cardValue).reduce((a,b)=>a+b,0)%10;
 }
 
-function isPair(c1, c2) {
-  return c1 && c2 && c1 === c2;
+function addRound() {
+    const p1 = document.getElementById("playerCard1").value;
+    const p2 = document.getElementById("playerCard2").value;
+    const b1 = document.getElementById("bankerCard1").value;
+    const b2 = document.getElementById("bankerCard2").value;
+    if (!p1 || !p2 || !b1 || !b2) return;
+
+    const p = [p1, p2];
+    const b = [b1, b2];
+    const pPoint = calcPoints(p);
+    const bPoint = calcPoints(b);
+    const result = pPoint > bPoint ? 'P' : (bPoint > pPoint ? 'B' : 'T');
+    const round = ++currentRound;
+
+    const prev = history[history.length - 1];
+    const prediction = simplePredict(round, p.length + b.length, prev?.result === result);
+    const correct = prediction === result ? '✅' : '❌';
+
+    history.push({ round, p, b, pPoint, bPoint, result, prediction, correct });
+    updatePrediction();
+    renderHistory();
+    populateDropdowns();
 }
 
-function submitGame() {
-  const pCards = [p1.value, p2.value];
-  if (p3.value) pCards.push(p3.value);
-  const bCards = [b1.value, b2.value];
-  if (b3.value) bCards.push(b3.value);
-
-  const pPoint = calcPoints(pCards);
-  const bPoint = calcPoints(bCards);
-  const result = bPoint > pPoint ? 'B' : pPoint > bPoint ? 'P' : 'T';
-  const pp = isPair(p1.value, p2.value);
-  const bp = isPair(b1.value, b2.value);
-
-  let check = '';
-  if (lastPrediction) {
-    check = (lastPrediction === result) ? '✅' : '❌';
-  }
-
-  // Trừ số lượng lá đã lật
-  [...pCards, ...bCards].forEach(c => {
-    if (c && cardCount[c] > 0) cardCount[c]--;
-  });
-
-  const game = {van, result, pp, bp, tie: result === 'T'};
-  history.push(game);
-  allCards.push(...pCards, ...bCards);
-
-  const row = document.createElement('tr');
-  row.innerHTML = `<td>${van}</td><td>${result}</td><td>${lastPrediction || '-'}</td><td>${check}</td><td>${pp ? '✅' : ''}</td><td>${bp ? '✅' : ''}</td><td>${result==='T'?'✅':''}</td>`;
-  document.querySelector('#historyTable tbody').appendChild(row);
-
-  van++;
-  updateVanDisplay();
-  document.querySelectorAll('.card-input').forEach(sel => sel.value = '');
-
-  showPrediction();
+function simplePredict(v, s, giuCau) {
+    const t = giuCau ? 1 : 0;
+    return ((v - s + t) % 2 === 0) ? 'B' : 'P';
 }
 
-function estimatePairProb() {
-  const totalLeft = Object.values(cardCount).reduce((a,b)=>a+b, 0);
-  let pp = 0, bp = 0;
-  cards.slice(1).forEach(c => {
-    const n = cardCount[c];
-    if (n >= 2) {
-      const prob = (n / totalLeft) * ((n - 1) / (totalLeft - 1));
-      pp += prob;
-      bp += prob;
-    }
-  });
-  return {pp: (pp * 100).toFixed(1), bp: (bp * 100).toFixed(1)};
+function updatePrediction() {
+    const last = history[history.length - 1];
+    if (!last) return;
+    const v = currentRound + 1;
+    const s = last.p.length + last.b.length;
+    const t = last.result === history[history.length - 2]?.result ? 1 : 0;
+    const pred = ((v - s + t) % 2 === 0) ? 'B' : 'P';
+    const text = `
+        <strong>Ván ${v}</strong><br/>
+        👉 Gợi ý cược: <b>${pred === 'B' ? '🟥 Cái' : '🟦 Con'}</b><br/>
+        (theo công thức v - s + t)
+    `;
+    document.getElementById("predictionBox").innerHTML = text;
 }
 
-function estimateTieProb() {
-  let tie = 9.0; // Ước lượng gần đúng
-  return tie.toFixed(1);
+function renderHistory() {
+    const tbody = document.querySelector("#historyTable tbody");
+    tbody.innerHTML = '';
+    history.forEach(h => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${h.round}</td>
+            <td>${h.p.join(',')}</td>
+            <td>${h.b.join(',')}</td>
+            <td>${h.pPoint}-${h.bPoint}</td>
+            <td>${h.result}</td>
+            <td>${h.prediction}</td>
+            <td>${h.correct}</td>
+        `;
+        tbody.appendChild(row);
+    });
 }
 
-function countPattern(patternFn) {
-  return history.reduce((acc, g, i, arr) => {
-    if (patternFn(i, arr)) acc++;
-    return acc;
-  }, 0);
-}
-
-function showPrediction() {
-  const n = history.length;
-  if (n < 1) return;
-
-  const last = history[n - 1];
-  const cardsUsed = 6;
-
-  const GC = countPattern((i, arr) => i >= 1 && arr[i].result === arr[i-1].result);
-  const LC = countPattern((i, arr) => i >= 2 && arr[i-2].result === arr[i-1].result && arr[i].result !== arr[i-1].result);
-  const DC = countPattern((i, arr) => i >= 2 && arr[i-2].result !== arr[i-1].result && arr[i-1].result === arr[i].result);
-
-  let score = (GC * 2) + (LC * 1.5) - (DC * 1.2) + (cardsUsed / 3);
-  let guess = Math.round(score) % 2 === 0 ? 'B' : 'P';
-  lastPrediction = guess;
-
-  const pairProbs = estimatePairProb();
-  const tieProb = estimateTieProb();
-
-  const predictionBox = document.getElementById('predictionBox');
-  predictionBox.innerHTML = `
-<pre>
-🧠 DỰ ĐOÁN VÁN KẾ TIẾP – VÁN ${van}
-───────────────────────────────
-📌 Cầu:
-- C1 (Giữ cầu): ${GC}
-- C3 (Lặp 2-1): ${LC}
-- C4 (Đảo cầu): ${DC}
-
-🔮 Gợi ý cược chính: ${guess === 'B' ? '🟥 Cái' : '🟦 Con'}
-
-🎯 KÈO PHỤ – DỰ ĐOÁN:
-• 🃏 Con đôi (PP): ${pairProbs.pp}%
-• 🃏 Cái đôi (BP): ${pairProbs.bp}%
-• 🎲 Hòa (Tie): ${tieProb}%
-</pre>
-  `;
-}
-
-function updateVanDisplay() {
-  document.getElementById('vanSo').textContent = van;
-}
+window.onload = populateDropdowns;

@@ -1,44 +1,30 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>Baccarat Insight v3.1 PRO+</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>Baccarat Insight v3.2 PRO+</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="app">
+    <h1>🧠 DỰ ĐOÁN VÁN KẾ TIẾP</h1>
     <div id="predictionBox"></div>
 
-    <div class="input-row">
-      <label for="startVan">🔢 Nhập số ván bắt đầu:</label>
-      <input type="number" id="startVan" value="1" min="1" onchange="setStartingVan()">
-    </div>
+    <h2>🎴 Nhập lá bài</h2>
+    <label>Con:</label>
+    <select id="playerCard1"></select>
+    <select id="playerCard2"></select>
+    <label>Cái:</label>
+    <select id="bankerCard1"></select>
+    <select id="bankerCard2"></select>
+    <button onclick="addRound()">➕ Thêm ván mới</button>
 
-    <h2>🎴 NHẬP LÁ BÀI VÁN <span id="vanSo">1</span></h2>
-    <div class="input-row">
-      <label>🔵 Con:</label>
-      <select class="card-input" id="p1"></select>
-      <select class="card-input" id="p2"></select>
-      <select class="card-input" id="p3"></select>
-    </div>
-    <div class="input-row">
-      <label>🔴 Cái:</label>
-      <select class="card-input" id="b1"></select>
-      <select class="card-input" id="b2"></select>
-      <select class="card-input" id="b3"></select>
-    </div>
-    <button onclick="submitGame()">+ Thêm ván mới</button>
-
-    <h3>LỊCH SỬ VÁN BÀI</h3>
+    <h2>📋 Lịch sử</h2>
     <table id="historyTable">
-      <thead>
-        <tr>
-          <th>Ván</th><th>KQ</th><th>Dự đoán</th><th>✅/❌</th><th>PP</th><th>BP</th><th>Tie</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
+        <thead><tr><th>Ván</th><th>Con</th><th>Cái</th><th>Điểm</th><th>Kết quả</th><th>Dự đoán</th><th>Đúng/Sai</th></tr></thead>
+        <tbody></tbody>
     </table>
-  </div>
-  <script src="app.js"></script>
+
+    <script src="app.js"></script>
 </body>
 </html>

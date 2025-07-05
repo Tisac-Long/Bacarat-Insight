@@ -14,6 +14,12 @@ window.onload = () => {
   updateVanDisplay();
 }
 
+function setStartingVan() {
+  const startVal = parseInt(document.getElementById('startVan').value);
+  van = isNaN(startVal) ? 1 : startVal;
+  updateVanDisplay();
+}
+
 function cardValue(card) {
   if (!card) return 0;
   if (card === 'A') return 1;
@@ -57,7 +63,6 @@ function showPrediction() {
   const logic = van - len + keep;
   const guess = logic % 2 === 0 ? 'B' : 'P';
 
-  // Cầu
   const C1 = history.length >= 2 && history.at(-1).result === history.at(-2).result;
   const C2 = history.length >= 3 &&
              history.at(-3).result !== history.at(-2).result &&
@@ -69,7 +74,6 @@ function showPrediction() {
              history.at(-4).result === history.at(-3).result &&
              history.at(-2).result !== history.at(-3).result;
 
-  // Xác suất PP, BP
   const ppRate = (history.filter(g=>g.pp).length / history.length * 100).toFixed(1);
   const bpRate = (history.filter(g=>g.bp).length / history.length * 100).toFixed(1);
   const tieRate = (history.filter(g=>g.result==='T').length / history.length * 100).toFixed(1);
@@ -85,7 +89,7 @@ function showPrediction() {
 - C3 (Lặp 2-1): ${C3 ? '✅' : '❌'}
 - C4 (Đảo cầu): ${C4 ? '✅' : '❌'}
 
-🔮 Dự đoán cầu chính: ${guess === 'B' ? '🟥 Cái' : '🟦 Con'}
+🔮 Gợi ý cầu chính: ${guess === 'B' ? '🟥 Cái' : '🟦 Con'}
 
 🎯 KÈO PHỤ:
 • 🃏 Con đôi (PP): ${ppRate}%

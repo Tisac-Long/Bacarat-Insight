@@ -5,11 +5,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   cardSelects.forEach(id => {
     const select = document.getElementById(id);
+    select.innerHTML = '';
     const emptyOption = document.createElement('option');
     emptyOption.value = '';
     emptyOption.textContent = '--';
     select.appendChild(emptyOption);
-
     cardValues.forEach(val => {
       const option = document.createElement('option');
       option.value = val;

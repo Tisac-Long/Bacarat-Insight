@@ -1,15 +1,9 @@
-body { font-family: Arial; margin: 20px; }
-h1 { color: #c0392b; }
-h2 { color: #2980b9; margin-top: 30px; }
-.prediction-box {
-  background: #f9f9f9;
-  padding: 15px;
-  border: 2px dashed #aaa;
-  margin-bottom: 20px;
-}
-select, button, input {
-  margin: 5px; padding: 6px;
-  font-size: 16px;
-}
-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+
+body { font-family: 'Segoe UI', sans-serif; background: #fff; margin: 0; padding: 0; }
+.container { padding: 20px; max-width: 600px; margin: auto; }
+h2, h3 { color: #b00; }
+.cards { display: flex; justify-content: space-between; margin: 10px 0; }
+select.card { width: 60px; margin-right: 5px; }
+.prediction-box { background: #ffe; padding: 10px; border: 1px solid #ccc; margin-bottom: 20px; }
+table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+th, td { border: 1px solid #ccc; padding: 5px; text-align: center; }

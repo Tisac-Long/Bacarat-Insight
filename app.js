@@ -16,49 +16,50 @@ function createDropdownOptions(select) {
     });
 }
 
-document.querySelectorAll('.card-select').forEach(sel => createDropdownOptions(sel));
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('.card-select').forEach(sel => createDropdownOptions(sel));
 
-document.getElementById('round-form').addEventListener('submit', function (e) {
-    e.preventDefault();
+    document.getElementById('round-form').addEventListener('submit', function (e) {
+        e.preventDefault();
 
-    const currentRound = parseInt(document.getElementById('current-round').value);
-    const nextRound = history.length ? history[history.length - 1].round + 1 : currentRound;
+        const currentRound = parseInt(document.getElementById('current-round').value);
+        const nextRound = history.length ? history[history.length - 1].round + 1 : currentRound;
 
-    const selects = document.querySelectorAll('.card-select');
-    const pCards = Array.from(selects).slice(0, 3).map(s => s.value).filter(Boolean);
-    const bCards = Array.from(selects).slice(3).map(s => s.value).filter(Boolean);
+        const selects = document.querySelectorAll('.card-select');
+        const pCards = Array.from(selects).slice(0, 3).map(s => s.value).filter(Boolean);
+        const bCards = Array.from(selects).slice(3).map(s => s.value).filter(Boolean);
 
-    if (pCards.length < 2 || bCards.length < 2) return alert('Cần nhập ít nhất 2 lá mỗi bên');
+        if (pCards.length < 2 || bCards.length < 2) return alert('Cần nhập ít nhất 2 lá mỗi bên');
 
-    const pTotal = pCards.reduce((sum, c) => sum + cardValues[c], 0) % 10;
-    const bTotal = bCards.reduce((sum, c) => sum + cardValues[c], 0) % 10;
+        const pTotal = pCards.reduce((sum, c) => sum + cardValues[c], 0) % 10;
+        const bTotal = bCards.reduce((sum, c) => sum + cardValues[c], 0) % 10;
 
-    let result = 'Hòa';
-    if (pTotal > bTotal) result = 'Con';
-    else if (bTotal > pTotal) result = 'Cái';
+        let result = 'Hòa';
+        if (pTotal > bTotal) result = 'Con';
+        else if (bTotal > pTotal) result = 'Cái';
 
-    const lastSuggestion = history.length ? history[history.length - 1].suggest : '';
-    const correct = lastSuggestion === result ? '✅' : '❌';
+        const lastSuggestion = history.length ? history[history.length - 1].suggest : '';
+        const correct = lastSuggestion === result ? '✅' : '❌';
 
-    const suggest = predictNext(history);
+        const suggest = predictNext(history);
 
-    history.push({
-        round: nextRound,
-        pCards: pCards.join(','),
-        bCards: bCards.join(','),
-        pTotal, bTotal,
-        result, suggest
+        history.push({
+            round: nextRound,
+            pCards: pCards.join(','),
+            bCards: bCards.join(','),
+            pTotal, bTotal,
+            result, suggest
+        });
+
+        document.querySelector('#next-round').textContent = nextRound + 1;
+        renderHistory();
+        showSuggestion(nextRound + 1, suggest);
+        document.querySelectorAll('.card-select').forEach(s => s.selectedIndex = 0);
     });
-
-    document.querySelector('#next-round').textContent = nextRound + 1;
-    renderHistory();
-    showSuggestion(nextRound + 1, suggest);
-    document.querySelectorAll('.card-select').forEach(s => s.selectedIndex = 0);
 });
 
 function predictNext(history) {
     if (history.length === 0) return 'Con';
-
     const last = history[history.length - 1];
     const keepC1 = history.length >= 2 &&
         history[history.length - 1].result === history[history.length - 2].result;

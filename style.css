@@ -1,9 +1,23 @@
-
-body { font-family: 'Segoe UI', sans-serif; background: #fff; margin: 0; padding: 0; }
-.container { padding: 20px; max-width: 600px; margin: auto; }
-h2, h3 { color: #b00; }
-.cards { display: flex; justify-content: space-between; margin: 10px 0; }
-select.card { width: 60px; margin-right: 5px; }
-.prediction-box { background: #ffe; padding: 10px; border: 1px solid #ccc; margin-bottom: 20px; }
-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-th, td { border: 1px solid #ccc; padding: 5px; text-align: center; }
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f8f8f8;
+}
+h1, h2 {
+    color: #b30000;
+}
+#prediction-box {
+    background: #fff0f0;
+    border: 2px dashed #b30000;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid #ccc;
+    padding: 6px;
+    text-align: center;
+}

@@ -1,50 +1,47 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Baccarat Insight v3.6 PRO</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <title>Baccarat Insight v3.7 PRO</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h2>🧠 DỰ ĐOÁN VÁN KẾ TIẾP – <span id="nextRound">Ván 1</span></h2>
-    <div id="predictionBox" class="prediction-box"></div>
+    <h1>🧠 DỰ ĐOÁN VÁN KẾ TIẾP – VÁN <span id="next-round">1</span></h1>
+    <div id="prediction-box">
+        <h2>🎯 GỢI Ý CƯỢC:</h2>
+        <ul id="suggestions"></ul>
+    </div>
+    <form id="round-form">
+        <label for="current-round">Số ván bắt đầu:</label>
+        <input type="number" id="current-round" value="1" min="1">
 
-    <h3>🎴 Nhập lá bài từng ván</h3>
-    <form id="roundForm">
-      <label for="startingRound">Số ván bắt đầu:</label>
-      <input type="number" id="startingRound" value="1" min="1" required />
+        <h3>Nhập bài Player:</h3>
+        <div id="player-cards">
+            <select class="card-select"></select>
+            <select class="card-select"></select>
+            <select class="card-select"></select>
+        </div>
 
-      <div class="cards">
-        <div>
-          <strong>Nhà Con:</strong><br/>
-          <select class="card" id="p1"></select>
-          <select class="card" id="p2"></select>
-          <select class="card" id="p3"></select>
+        <h3>Nhập bài Banker:</h3>
+        <div id="banker-cards">
+            <select class="card-select"></select>
+            <select class="card-select"></select>
+            <select class="card-select"></select>
         </div>
-        <div>
-          <strong>Nhà Cái:</strong><br/>
-          <select class="card" id="b1"></select>
-          <select class="card" id="b2"></select>
-          <select class="card" id="b3"></select>
-        </div>
-      </div>
-      <button type="submit">➕ Thêm ván</button>
+
+        <button type="submit">➕ Thêm ván</button>
     </form>
 
-    <div id="history">
-      <h3>📜 Lịch sử ván</h3>
-      <table id="historyTable">
+    <table id="history-table">
         <thead>
-          <tr><th>Ván</th><th>Con</th><th>Cái</th><th>Kết quả</th><th>Gợi ý</th><th>✅/❌</th></tr>
+            <tr>
+                <th>Ván</th><th>Bài Con</th><th>Bài Cái</th><th>Điểm Con</th><th>Điểm Cái</th>
+                <th>Kết quả</th><th>Gợi ý</th><th>✅/❌</th>
+            </tr>
         </thead>
         <tbody></tbody>
-      </table>
-    </div>
-  </div>
+    </table>
 
-  <script src="app.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>

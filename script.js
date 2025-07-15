@@ -25,6 +25,7 @@ function resetRound() {
   const start = parseInt(document.getElementById("startRound").value);
   currentRound = isNaN(start) ? 1 : start;
   document.getElementById("roundDisplay").innerText = "Ván #" + currentRound;
+  document.getElementById("suggestionNext").innerHTML = '🔮 Gợi ý cược cho ván tiếp theo: <span style="color:gray">Đang chờ...</span>';
 }
 
 function cardToPoint(card) {
@@ -53,14 +54,18 @@ function addRound() {
   if (pPoint > bPoint) result = 'Player';
   else if (bPoint > pPoint) result = 'Banker';
 
-  history.push({ round: currentRound, pCards, bCards, pPoint, bPoint, result });
+  history.push({ round: currentRound, result });
 
   let aiVote = getAIVote();
+
+  // Update suggestion for next round
+  document.getElementById("suggestionNext").innerHTML =
+    `🔮 Gợi ý cược cho ván tiếp theo: <span style="color:green"><b>${aiVote}</b></span>`;
 
   document.getElementById("log").innerHTML += `
     <div style="margin-top:10px;">
       ✅ <b>Ván #${currentRound}</b> - Kết quả: <b>${result}</b><br>
-      AI Voting (kết hợp C1–C10) dự đoán: <b>${aiVote}</b> ${aiVote === result ? '✔️ ĐÚNG' : '❌ SAI'}
+      AI Voting (C1–C10) dự đoán: <b>${aiVote}</b> ${aiVote === result ? '✔️ ĐÚNG' : '❌ SAI'}
     </div>
   `;
 
@@ -69,41 +74,35 @@ function addRound() {
   fillDropdowns();
 }
 
+// Simplified combined C1–C10 voting logic
 function getAIVote() {
-  if (history.length < 5) return 'Banker'; // Ưu tiên Banker nếu chưa có đủ dữ liệu
-
-  // Giả lập logic C1–C10 kết hợp theo trọng số
+  if (history.length < 5) return 'Banker';
   let weights = { Player: 0, Banker: 0, Tie: 0 };
 
   // C1: giữ cầu
   let last = history.at(-1).result;
   weights[last] += 2;
-
   // C2: đảo cầu
   if (history.length >= 2 && history.at(-1).result !== history.at(-2).result) {
     let alt = history.at(-1).result === 'Player' ? 'Banker' : 'Player';
     weights[alt] += 1.5;
   }
-
   // C3: 2 ván trước giống nhau
   if (history.length >= 3) {
     let [a, b] = [history.at(-2).result, history.at(-3).result];
     if (a === b) weights[a] += 1.2;
   }
-
   // C4: 3 ván cùng kết quả
   if (history.length >= 4) {
     let res = [history.at(-1).result, history.at(-2).result, history.at(-3).result];
     if (res.every(r => r === res[0])) weights[res[0]] += 1;
   }
-
-  // C5–C9 (giả lập đơn giản): cộng thêm theo xu hướng lịch sử
+  // C5–C9: tổng tần suất
   let totalP = history.filter(v => v.result === 'Player').length;
   let totalB = history.filter(v => v.result === 'Banker').length;
   weights['Player'] += totalP / history.length;
   weights['Banker'] += totalB / history.length;
 
-  // C10: Voting theo tổng trọng số
-  let sorted = Object.entries(weights).sort((a, b) => b[1] - a[1]);
+  let sorted = Object.entries(weights).sort((a,b) => b[1]-a[1]);
   return sorted[0][0];
 }
